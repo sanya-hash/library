@@ -1,6 +1,7 @@
 package com.library.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,50 @@ public class DataItemServiceImpl implements DataItemService{
                 .dataType(dataItem.getDataType())
                 .build();
     }
+    
+    
+	@Override
+	public List<DataItem> uploadItem(Map dataItem) {
+		// TODO Auto-generated method stub
+	     
+//	    Long dataItemId =Long.parseLong(dataItem.get("dataItemId").toString());
+		String Id = dataItem.get("topic").toString();
+		Long topicId = Long.parseLong(Id);
+		
+		
+		
+	    String dataItemName = dataItem.get("title").toString();
+	    String dataType = dataItem.get("contentType").toString();
+	    String program = dataItem.get("programCourse").toString();
+	    String branch = dataItem.get("branch").toString();
+	    String semester = dataItem.get("semester").toString();
+	    String subject = dataItem.get("subjectTitle").toString();
+	    String allowDownload= dataItem.get("allowDownload").toString();//wait 11:30 p aya
+	    
+		DataItem dataItemToSave = new DataItem();
+		
+//		List<DataItem> listOfDataItems = new ArrayList<>();
+		
+		
+//		dataItemToSave.setDataItemId(dataItemId);
+		dataItemToSave.setDataItemName(dataItemName);
+		dataItemToSave.setDataType(dataType);
+		dataItemToSave.setProgram(program);
+		dataItemToSave.setBranch(branch);
+		dataItemToSave.setSemester(semester);
+		dataItemToSave.setSubject(subject);
+		dataItemToSave.setAllowDownload(allowDownload);
+		
+		TopicList topic = new TopicList();
+		topic.setTopicId(topicId);
+		
+		dataItemToSave.setTopic(topic);
+		
+		dataItemRepository.save(dataItemToSave);
+		
+		
+		
+		return null;
+	}
+		
 }
