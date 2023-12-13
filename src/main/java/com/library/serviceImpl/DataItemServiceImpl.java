@@ -31,6 +31,10 @@ public class DataItemServiceImpl implements DataItemService{
         return DataItemDto.builder()
                 .dataItemId(dataItem.getDataItemId())
                 .dataItemName(dataItem.getDataItemName())
+                .program(dataItem.getProgram())
+                .branch(dataItem.getBranch())
+                .semester(dataItem.getSemester())
+                .subject(dataItem.getSubject())
                 .dataType(dataItem.getDataType())
                 .build();
     }

@@ -18,4 +18,9 @@ public class DataItemDto {
 
     private String dataItemName;
     private String dataType;
+    private String program;//programcourse
+    private String branch;
+    private String  semester;
+    private String subject;
+
 }
