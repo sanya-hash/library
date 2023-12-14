@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.library.dto.DataItemDto;
+import com.library.dto.FileResponse;
 import com.library.entity.DataItem;
 import com.library.service.DataItemService;
 
@@ -28,6 +30,22 @@ public class DataItemController {
     @GetMapping("/{topicId}")
     public List<DataItemDto> getDataItemsByTopic(@PathVariable Long topicId) {
         return dataItemService.getDataItemsByTopicId(topicId);
+    }
+    
+    @GetMapping("/getFileData/{dataItemId}")
+    public ResponseEntity<byte[]> getFileData(@PathVariable Long dataItemId) {
+        try {
+        	 FileResponse fileResponse = dataItemService.getFileData(dataItemId);
+            
+            // You can add additional headers if needed, such as content type
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//            headers.setContentDisposition(ContentDisposition.builder("attachment").filename("file.bin").build());
+            return new ResponseEntity<>(fileResponse.getData(),HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
     
 //    @PostMapping("/upload")

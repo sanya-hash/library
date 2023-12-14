@@ -3,6 +3,7 @@ package com.library.serviceImpl;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.library.dto.DataItemDto;
+import com.library.dto.FileResponse;
 import com.library.dto.TopicListDto;
 import com.library.entity.DataItem;
 import com.library.entity.TopicList;
@@ -31,9 +33,11 @@ public class DataItemServiceImpl implements DataItemService{
 	
 	@Autowired
 	private TopicListRepository topicListRepository;
+	
 	@Override
 	public List<DataItemDto> getDataItemsByTopicId(Long topicId) {
 		List<DataItem> data = (List<DataItem>)dataItemRepository.findByTopicTopicId(topicId);
+		
 		return data.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -48,7 +52,7 @@ public class DataItemServiceImpl implements DataItemService{
                 .semester(dataItem.getSemester())
                 .subject(dataItem.getSubject())
                 .dataType(dataItem.getDataType())
-                .filePath(dataItem.getFilePath())
+//                .filePath(dataItem.getFilePath())
                 .build();
     }
     
@@ -109,7 +113,7 @@ public class DataItemServiceImpl implements DataItemService{
         dataItem.setSubject(subject);
         dataItem.setAllowDownload(allowDownload);
         dataItem.setTopic(topic);
-
+        
         // Save the file and set the file path in the database
         String filePath = saveFile(file, dataItemName, dataType);
         dataItem.setFilePath(filePath);
@@ -138,5 +142,17 @@ public class DataItemServiceImpl implements DataItemService{
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex);
     }
+
+	@Override
+	public FileResponse getFileData(Long id) throws IOException {
+		// TODO Auto-generated method stub
+		DataItem dataItem= dataItemRepository.findById(id).get();
+		String filePath = dataItem.getFilePath();
+		Path path = Paths.get(filePath);
+		byte [] data = Files.readAllBytes(path);
+		String type = dataItem.getDataType();
+		FileResponse fileResponse = new FileResponse(data);
+		return fileResponse;
+	}
 		
 }

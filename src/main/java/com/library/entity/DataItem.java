@@ -1,5 +1,7 @@
 package com.library.entity;
 
+import java.nio.file.Path;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +18,6 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @ToString
-@Getter
 @Setter
 public class DataItem {
 	@Id

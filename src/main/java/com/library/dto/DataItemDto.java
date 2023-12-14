@@ -22,6 +22,7 @@ public class DataItemDto {
     private String branch;
     private String  semester;
     private String subject;
-    private String filePath;
+   
+//    private byte [] data;
 
 }
